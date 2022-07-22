@@ -4,10 +4,12 @@ import './App.css';
 import Home from './pages/Home'
 import Login from './pages/Login'
 import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
 import { config } from './config/config'
 import AuthRoute from './components/AuthRoute';
 
-initializeApp(config.firebaseConfig)
+const app = initializeApp(config.firebaseConfig)
+export const db = getFirestore(app)
 
 export interface IApplicationProps {}
 
@@ -16,9 +18,9 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={
-          <AuthRoute>
+          // <AuthRoute>
             <Home />
-          </AuthRoute>
+          // </AuthRoute>
         }/>
         <Route path='/login' element={<Login />}/>
       </Routes>
