@@ -47,8 +47,12 @@ const Login: React.FunctionComponent<ILoginProps> = props => {
                 emailAddress: emailAddress,
               }
   
-              const usersCollectionRef = collection(db, "users")
-              addDoc(usersCollectionRef, userInfo)
+              // const usersCollectionRef = collection(db, "users")
+              // addDoc(usersCollectionRef, userInfo)
+              //   .then(() => console.log("New user successfully added."))
+              //   .catch(err => console.error(err))
+
+              setDoc(doc(db, "users", response.user.uid), {userInfo})
                 .then(() => console.log("New user successfully added."))
                 .catch(err => console.error(err))
             })
