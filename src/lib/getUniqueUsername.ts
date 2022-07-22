@@ -5,7 +5,8 @@ import {
   doc,
   getDoc,
   addDoc,
-  deleteDoc
+  deleteDoc,
+  setDoc
 } from "firebase/firestore"
 
 import { db } from "../App"
@@ -20,7 +21,7 @@ export default async function getUniqueUsername(name:string):Promise<string> {
   const docRef = doc(db, "/usernames/", username);
   const docSnap = await getDoc(docRef);
   
-  if (!docSnap.exists()) {
+  if (docSnap.exists()) {
     console.log("Username already taken!!");
 
     const originalUsername = username
@@ -33,13 +34,12 @@ export default async function getUniqueUsername(name:string):Promise<string> {
       if (!docSnap.exists()) {
         unique = true
       }
+      i = i + 1
     }
   }
 
-  const usernamesCollectionRef = collection(db, "usernames")
-
-  addDoc(usernamesCollectionRef, { username: username })
-    .then(() => console.log("New username entry added"))
+  setDoc(doc(db, "usernames", username), {})
+    .then(() => console.log("New Username Added."))
     .catch(err => console.error(err))
 
   return username;
