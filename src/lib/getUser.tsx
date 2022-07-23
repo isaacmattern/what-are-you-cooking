@@ -2,17 +2,16 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../App";
 import IUser from "./IUser";
 
-export default async function getUser(userId:string):Promise<IUser | null> {
+export default async function getUser(userId:string):Promise<IUser> {
+
+  console.log(userId)
 
   const docRef = doc(db, "/users/", userId);
-  let user;
   const docSnap = await getDoc(docRef)
 
-  const data = docSnap.exists() ? docSnap.data() as IUser : null
+  console.log(docSnap)
 
-  if (data === null || data === undefined) {
-    return null
-  } 
+  const data = docSnap.exists() ? docSnap.data() as IUser : { emailAddress: "XXX", fullName: "XXX", userId:"XXX", username:"XXX" }
 
   return data
 }

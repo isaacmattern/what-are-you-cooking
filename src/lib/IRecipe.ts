@@ -4,6 +4,7 @@ export default interface IRecipe {
   title: string,
   description: string,
   authorID: string,
+  authorUsername: string,
   authorName: string,
   ingredients: string[],
   directions: string[],

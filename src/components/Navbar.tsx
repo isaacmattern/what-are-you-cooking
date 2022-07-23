@@ -28,6 +28,9 @@ const Name: React.FunctionComponent<INameProps> = props => {
       <h1 className="navlogo">What Are You Cooking?</h1>
 
       <div>
+        <button onClick={() => {
+          navigate('/createrecipe')
+        }}>Create Recipe</button>
         {button}
       </div>
     </div>

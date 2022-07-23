@@ -1,30 +1,46 @@
 import { getAuth } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDoc, doc, updateDoc } from 'firebase/firestore';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../App';
 import Navbar from '../components/Navbar';
+import getUser from '../lib/getUser';
 import IRecipe from '../lib/IRecipe';
 
 export interface ICreateRecipeProps {};
 
 const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
+
   const user = getAuth().currentUser;
   const navigate = useNavigate();
 
+  let userEntry = {
+    emailAddress: "???",
+    fullName: "???",
+    userId:"???",
+    username:"???",
+  }
 
-  const recipesCollectionRef = collection(db, "recipes")
+  if(!!user) {
+    getUser(user.uid)
+      .then(res => userEntry = res)
+      .catch(err => console.log(err))
+  } else {
+    console.error("User is not signed in. ")
+  }
+
 
   const [form, setForm] = useState<IRecipe>({
     title: "",
     description: "",
-    authorID: "",
-    authorName: user ? (user.displayName ? user.displayName : "") : "",
+    authorID: userEntry.userId,
+    authorUsername: userEntry.username,
+    authorName: userEntry.fullName,
     ingredients: [],
     directions: [],
   });
 
-  const handleSubmit= (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (
@@ -37,12 +53,23 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
       return
     }
 
-    addDoc(recipesCollectionRef, form)
-      .then(() => {
-        console.log("Recipe added successfully")
-        navigate('/')
-      })
-      .catch(err => console.log(err))
+    const snap = await getDoc(doc(db, "recipes", userEntry.userId))
+
+    if(snap.exists()) {
+      let data = snap.data()
+      data.posts.push(form)
+      await updateDoc(doc(db, "recipes", userEntry.userId), { data })
+    } else {
+      console.log(userEntry.userId)
+      console.error("Posts entry not found in database for this user")
+    }
+
+    // addDoc(recipesCollectionRef, form)
+    //   .then(() => {
+    //     console.log("Recipe added successfully")
+    //     navigate('/')
+    //   })
+    //   .catch(err => console.log(err))
 
   }
 
