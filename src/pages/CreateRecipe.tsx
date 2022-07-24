@@ -6,6 +6,7 @@ import { db } from '../App';
 import Navbar from '../components/Navbar';
 import getUser from '../lib/getUser';
 import IRecipe from '../lib/IRecipe';
+import IUser from '../lib/IUser';
 
 export interface ICreateRecipeProps {};
 
@@ -14,7 +15,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
   const user = getAuth().currentUser;
   const navigate = useNavigate();
 
-  const [userEntry, setUserEntry] = useState({
+  const [userEntry, setUserEntry] = useState<IUser>({
     emailAddress: "???",
     fullName: "???",
     userId:"???",
@@ -27,11 +28,13 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
     authorID: "",
     authorUsername: "",
     authorName: "",
+    tags: [],
     ingredients: [],
     directions: [],
   });
 
   useEffect(() => {
+
     const getUserEntry = async () => {
       if(!!user) {
         let res = await getUser(user.uid)
@@ -47,9 +50,10 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
         console.error("User is not signed in. ")
       }
     }
+
     getUserEntry()
-      .then()
       .catch(err => console.error(err))
+
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -97,25 +101,43 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
   }
 
-  const handleIngredient = (e: ChangeEvent<HTMLInputElement>, i: number) => {
-    const ingredientsClone = [...form.ingredients]
+  const handleTag = (e: ChangeEvent<HTMLInputElement>, i: number) => {
+    const tagCopy = [...form.tags]
 
-    ingredientsClone[i] = e.target.value
+    tagCopy[i] = e.target.value
 
     setForm({
       ...form,
-      ingredients: ingredientsClone
+      tags: tagCopy
+    })
+  }
+
+  const handleIngredient = (e: ChangeEvent<HTMLInputElement>, i: number) => {
+    const ingredientsCopy = [...form.ingredients]
+
+    ingredientsCopy[i] = e.target.value
+
+    setForm({
+      ...form,
+      ingredients: ingredientsCopy
     })
   }
 
   const handleDirection = (e: ChangeEvent<HTMLTextAreaElement>, i: number) => {
-    const directionsClone = [...form.directions]
+    const directionsCopy = [...form.directions]
 
-    directionsClone[i] = e.target.value
+    directionsCopy[i] = e.target.value
 
     setForm({
       ...form,
-      directions: directionsClone
+      directions: directionsCopy
+    })
+  }
+
+  const handleTagCount = () => {
+    setForm({
+      ...form,
+      tags: [...form.tags, ""]
     })
   }
 
@@ -155,6 +177,20 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
               <textarea 
                 value={form.description} 
                 onChange={e => setForm({...form, description: e.target.value})} />
+            </div>
+
+            <div className="form-group">
+              <label>Tags</label>
+              {
+                form.tags.map((tag, i) => (
+                  <input 
+                    type="text"
+                    key={i}
+                    value={tag} 
+                    onChange={e => handleTag(e, i)} />
+                ))
+              }
+              <button type="button" onClick={handleTagCount}>Add tag</button>
             </div>
 
             <div className="form-group">

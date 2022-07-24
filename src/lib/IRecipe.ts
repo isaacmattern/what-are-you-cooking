@@ -6,6 +6,7 @@ export default interface IRecipe {
   authorID: string,
   authorUsername: string,
   authorName: string,
+  tags: string[],
   ingredients: string[],
   directions: string[],
 };
