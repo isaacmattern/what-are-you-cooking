@@ -9,9 +9,14 @@ export default async function getUser(userId:string):Promise<IUser> {
   const docRef = doc(db, "/users/", userId);
   const docSnap = await getDoc(docRef)
 
-  console.log(docSnap)
+  let data1 = docSnap.data()
+  if(data1 !== undefined) {
+    console.log(data1.userInfo)
+  }
 
-  const data = docSnap.exists() ? docSnap.data() as IUser : { emailAddress: "XXX", fullName: "XXX", userId:"XXX", username:"XXX" }
+  const data = docSnap.exists() ? docSnap.data().userInfo as IUser : { emailAddress: "XXX", fullName: "XXX", userId:"XXX", username:"XXX" }
+
+  console.log(data)
 
   return data
 }

@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { addDoc, collection, getDoc, doc, updateDoc } from 'firebase/firestore';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../App';
 import Navbar from '../components/Navbar';
@@ -14,31 +14,50 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
   const user = getAuth().currentUser;
   const navigate = useNavigate();
 
-  let userEntry = {
+  const [userEntry, setUserEntry] = useState({
     emailAddress: "???",
     fullName: "???",
     userId:"???",
     username:"???",
-  }
-
-  if(!!user) {
-    getUser(user.uid)
-      .then(res => userEntry = res)
-      .catch(err => console.log(err))
-  } else {
-    console.error("User is not signed in. ")
-  }
-
+  })
 
   const [form, setForm] = useState<IRecipe>({
     title: "",
     description: "",
-    authorID: userEntry.userId,
-    authorUsername: userEntry.username,
-    authorName: userEntry.fullName,
+    authorID: "",
+    authorUsername: "",
+    authorName: "",
     ingredients: [],
     directions: [],
   });
+
+  useEffect(() => {
+    getUserEntry()
+  }, []);
+
+  const getUserEntry:any = async() => {
+    if(!!user) {
+      getUser(user.uid)
+        .then(res => {
+          setUserEntry(res)
+          setForm({
+            ...form,
+            authorID: userEntry.userId,
+            authorUsername: userEntry.username,
+            authorName: userEntry.fullName,
+          })
+        })
+        .catch(err => console.log(err))
+    } else {
+      console.error("User is not signed in. ")
+    }
+  }
+
+  console.log("userEntry below")
+  console.log(userEntry)
+
+
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -53,30 +72,40 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
       return
     }
 
-    const snap = await getDoc(doc(db, "recipes", userEntry.userId))
+    console.log("here")
+    console.log(userEntry.userId)
+
+    const snap = await getDoc(doc(db, "posts", userEntry.userId))
+
+    console.log(snap)
+
+    console.log("here")
+
 
     if(snap.exists()) {
+
+      // Add recipe to recipes collection
+      let recipeId;
+      const recipesCollectionRef = collection(db, "recipes")
+      addDoc(recipesCollectionRef, form)
+        .then(docRef => recipeId = docRef.id)
+        .catch(err => console.error(err))
+
+      // Add ID of new recipe to user's posts array
       let data = snap.data()
       data.posts.push(form)
-      await updateDoc(doc(db, "recipes", userEntry.userId), { data })
+      await updateDoc(doc(db, "posts", userEntry.userId), { data })
     } else {
       console.log(userEntry.userId)
       console.error("Posts entry not found in database for this user")
     }
-
-    // addDoc(recipesCollectionRef, form)
-    //   .then(() => {
-    //     console.log("Recipe added successfully")
-    //     navigate('/')
-    //   })
-    //   .catch(err => console.log(err))
 
   }
 
   const handleIngredient = (e: ChangeEvent<HTMLInputElement>, i: number) => {
     const ingredientsClone = [...form.ingredients]
 
-    ingredientsClone[i] = e.currentTarget.nodeValue || ""
+    ingredientsClone[i] = e.target.value
 
     setForm({
       ...form,
@@ -87,7 +116,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
   const handleDirection = (e: ChangeEvent<HTMLTextAreaElement>, i: number) => {
     const directionsClone = [...form.directions]
 
-    directionsClone[i] = e.currentTarget.nodeValue || ""
+    directionsClone[i] = e.target.value
 
     setForm({
       ...form,
