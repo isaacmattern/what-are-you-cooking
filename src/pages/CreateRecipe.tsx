@@ -32,32 +32,25 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
   });
 
   useEffect(() => {
-    getUserEntry()
-  }, []);
-
-  const getUserEntry:any = async() => {
-    if(!!user) {
-      getUser(user.uid)
-        .then(res => {
-          setUserEntry(res)
-          setForm({
-            ...form,
-            authorID: userEntry.userId,
-            authorUsername: userEntry.username,
-            authorName: userEntry.fullName,
-          })
+    const getUserEntry = async () => {
+      if(!!user) {
+        let res = await getUser(user.uid)
+        setUserEntry(res)
+        setForm({
+          ...form,
+          authorID: res.userId,
+          authorUsername: res.username,
+          authorName: res.fullName,
         })
-        .catch(err => console.log(err))
-    } else {
-      console.error("User is not signed in. ")
+        console.log("User info successfully fetched and set.")
+      } else {
+        console.error("User is not signed in. ")
+      }
     }
-  }
-
-  console.log("userEntry below")
-  console.log(userEntry)
-
-
-
+    getUserEntry()
+      .then()
+      .catch(err => console.error(err))
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -72,33 +65,35 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
       return
     }
 
-    console.log("here")
-    console.log(userEntry.userId)
+    const userDoc = await getDoc(doc(db, "users", userEntry.userId))
 
-    const snap = await getDoc(doc(db, "posts", userEntry.userId))
-
-    console.log(snap)
-
-    console.log("here")
-
-
-    if(snap.exists()) {
+    if(!!userDoc) {
 
       // Add recipe to recipes collection
-      let recipeId;
+      let recipeId:string = "X";
       const recipesCollectionRef = collection(db, "recipes")
-      addDoc(recipesCollectionRef, form)
+      await addDoc(recipesCollectionRef, form)
         .then(docRef => recipeId = docRef.id)
         .catch(err => console.error(err))
 
       // Add ID of new recipe to user's posts array
-      let data = snap.data()
-      data.posts.push(form)
-      await updateDoc(doc(db, "posts", userEntry.userId), { data })
+
+      let data = userDoc.data()
+      let posts:string[] = []
+      if(data !== undefined) {
+        posts = data.posts
+      }
+      posts.push(recipeId)
+      await updateDoc(doc(db, "users", userEntry.userId), {posts: posts} )
+
     } else {
       console.log(userEntry.userId)
       console.error("Posts entry not found in database for this user")
     }
+
+    console.log("userEntry before going Home: ")
+    console.log(userEntry)
+    navigate('/')
 
   }
 
