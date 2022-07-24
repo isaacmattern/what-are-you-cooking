@@ -1,7 +1,11 @@
+import { collection, doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { db } from '../App';
 import Navbar from '../components/Navbar';
+import RecipeCardContainer from '../components/RecipeCardContainer';
 import getUserEntryByUsername from '../lib/getUserEntryByUsername';
+import { getUserRecipesByUserId } from '../lib/getUserRecipesByUserId';
 import IUser from '../lib/IUser';
 
 // export interface IProfileProps {
@@ -14,19 +18,26 @@ const Profile: React.FunctionComponent = () => {
   const [userEntry, setUserEntry] = useState<IUser | undefined>(undefined);
   const navigate = useNavigate();
 
+  const [recipes, setRecipes]:any[] = useState([])
+
+  const recipesCollectionRef = collection(db, "recipes")
+
   useEffect(() => {
-    const checkUserExists = async () => {
+    const checkUserExistsAndSetReciptes = async () => {
       console.log(username)
-      const res = await getUserEntryByUsername(username || "");
-      console.log(res)
+      const userEntryRes = await getUserEntryByUsername(username || "");
+      console.log(userEntryRes)
       
-      if(!!res && res.userId) {
-        setUserEntry(res);
+      if(!!userEntryRes && userEntryRes.userId) {
+        setUserEntry(userEntryRes);
+
+        const recipesRes = await getUserRecipesByUserId(userEntryRes.userId)
+        setRecipes(recipesRes)
       } else {
         navigate('/not-found');
       }
     }
-    checkUserExists();
+    checkUserExistsAndSetReciptes();
   }, [username]);
 
   return (
@@ -34,8 +45,7 @@ const Profile: React.FunctionComponent = () => {
       <Navbar />
       <div className='profile'>
         <h1>Recipes from {username}</h1>
-        {/* Get Recipes from a specific user! */}
-        {/* <RecipeCardContainer recipes={recipes}> */}
+        <RecipeCardContainer recipes={recipes} />
       </div>
     </div>
 
