@@ -4,7 +4,8 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../App';
 import Navbar from '../components/Navbar';
-import getUser from '../lib/getUser';
+import getUserEntryById from '../lib/getUserEntryById';
+import getUser from '../lib/getUserEntryById';
 import IRecipe from '../lib/IRecipe';
 import IUser from '../lib/IUser';
 
@@ -20,6 +21,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
     fullName: "???",
     userId:"???",
     username:"???",
+    posts: [""],
   })
 
   const [form, setForm] = useState<IRecipe>({
@@ -37,7 +39,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
     const getUserEntry = async () => {
       if(!!user) {
-        let res = await getUser(user.uid)
+        let res = await getUserEntryById(user.uid)
         setUserEntry(res)
         setForm({
           ...form,

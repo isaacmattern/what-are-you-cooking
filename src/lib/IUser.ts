@@ -3,4 +3,5 @@ export default interface IUser {
   username: string,
   fullName: string,
   emailAddress: string,
+  posts: string[]
 };

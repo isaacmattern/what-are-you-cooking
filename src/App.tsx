@@ -7,7 +7,7 @@ import { getFirestore } from 'firebase/firestore'
 import { config } from './config/config'
 import AuthRoute from './components/AuthRoute';
 import ReactLoader from './components/ReactLoader';
-import getUser from './lib/getUser';
+import getUser from './lib/getUserEntryById';
 import { getAuth } from 'firebase/auth';
 import IUser from './lib/IUser';
 
@@ -45,6 +45,7 @@ const App: React.FunctionComponent = () => {
                   <CreateRecipe />
                 </AuthRoute>
               }/>
+              <Route path='/not-found' element={<NotFound />} />
               <Route path='*' element={<NotFound />} />
             </Routes>
           </Suspense>

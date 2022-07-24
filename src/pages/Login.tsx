@@ -42,20 +42,17 @@ const Login: React.FunctionComponent<ILoginProps> = props => {
           // Create New User and Username entry
           getUniqueUsername(response.user.displayName)
             .then(username => {
-              var userInfo:IUser = {
+
+              setDoc(doc(db, "users", response.user.uid), {
                 userId: response.user.uid,
                 username: username,
                 fullName: fullName,
                 emailAddress: emailAddress,
-              }
-
-              setDoc(doc(db, "users", response.user.uid), {userInfo})
+                posts: []
+              })
                 .then(() => console.log("New user successfully added."))
                 .catch(err => console.error(err))
 
-              updateDoc(doc(db, "users", response.user.uid), {posts: []})
-                .then(() => console.log("New user's posts successfully added."))
-                .catch(err => console.error(err))
             })
             .catch(err => console.error(err))
           
