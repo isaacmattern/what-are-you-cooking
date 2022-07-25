@@ -65,7 +65,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
   return (
 
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className='recipe'>
         <h1>{recipe.title}</h1>
         {/* <h4>By {recipe.authorName}</h4> */}

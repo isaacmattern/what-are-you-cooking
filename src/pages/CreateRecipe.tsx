@@ -163,7 +163,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       
       <div className="popup-inner">
           <h2>Add a new recipe</h2>

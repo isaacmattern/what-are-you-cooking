@@ -1,48 +1,45 @@
 import { getAuth, signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import getUserEntryById from '../lib/getUserEntryById';
 import IUser from '../lib/IUser';
 
-export interface INameProps {};
+export interface INavbarProps {
+  userEntry: IUser | null,
+};
 
-const Name: React.FunctionComponent<INameProps> = props => {
+const Navbar: React.FunctionComponent<INavbarProps> = props => {
+
   const auth = getAuth();
   const navigate = useNavigate();
-
   const user = auth.currentUser;
 
-  let viewMyProfile;
+  const {userEntry} = props
+  
+  // const userEntry  = useUserEntry();
 
-  // useEffect(() => {
-  //   const getUserEntry = async () => {
-  //     if(!!user) {
-  //       let res = await getUserEntryById(user.uid)
-  //       viewMyProfile = <button onClick={() => {
-  //         navigate('/profile/' + res.username)
-  //       }}>{res.username}</button>
-  //     } else {
-  //       viewMyProfile = undefined
-  //       console.log("User is not signed in. ")
-  //     }
-  //   }
-  //   getUserEntry()
-  //     .catch(err => console.error(err))
-  // }, []);
+  // console.log("In Navbar")
+  // if(userEntry) {
+  //   console.log("username is " + userEntry.username)
+  // } else {
+  //   console.log("user is null")
+  // }
 
   let signInOutButton;
   if(auth.currentUser) {
-    signInOutButton = <button onClick={() => {
-      signOut(auth).catch(err => {
-        console.error(err)
-      })
-      console.log("Signed Out.")
-      navigate('/login')
-    }}>Log Out</button>
+    signInOutButton = 
+      <button onClick={() => {
+        signOut(auth).catch(err => {
+          console.error(err)
+        })
+        console.log("Signed Out.")
+        navigate('/login')
+      }}>Log Out</button>
   } else {
-    signInOutButton = <button onClick={() => {
-      navigate('/login')
-    }}>Log In</button>
+    signInOutButton = 
+      <button onClick={() => {
+        navigate('/login')
+      }}>Log In</button>
   }
 
   return (
@@ -55,11 +52,19 @@ const Name: React.FunctionComponent<INameProps> = props => {
         <button onClick={() => {
           navigate('/createrecipe')
         }}>Create Recipe</button>
+
+        <button onClick={() => {
+          if(userEntry) {
+            navigate(`/profile/${userEntry.username}`)
+          } else {
+            navigate('login')
+          }
+        }}>My Profile</button>
+
         {signInOutButton}
-        {viewMyProfile}
       </div>
     </div>
   )
 };
 
-export default Name
+export default Navbar

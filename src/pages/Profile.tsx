@@ -42,7 +42,7 @@ const Profile: React.FunctionComponent = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className='profile'>
         <h1>Recipes from {username}</h1>
         <RecipeCardContainer recipes={recipes} />

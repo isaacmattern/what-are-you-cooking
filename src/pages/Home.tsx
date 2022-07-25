@@ -9,7 +9,7 @@ import Navbar from '../components/Navbar';
 export interface IHomeProps {};
 
 const Home: React.FunctionComponent<IHomeProps> = props => {
-  const auth = getAuth();
+  
   const navigate = useNavigate();
 
   const [recipes, setRecipes]:any[] = useState([])
@@ -31,7 +31,7 @@ const Home: React.FunctionComponent<IHomeProps> = props => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <p>Welcome to What Are You Cooking</p>
       <RecipeCardContainer recipes={recipes} />

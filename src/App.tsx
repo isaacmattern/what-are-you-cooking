@@ -1,6 +1,7 @@
-import React, {lazy, Suspense, useState} from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, {lazy, Suspense, useEffect, useState} from 'react';
+import { BrowserRouter, Outlet, Route, Router, Routes, useOutletContext } from 'react-router-dom';
 import './App.css';
+import UserContext from './context/user';
 
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
@@ -10,8 +11,11 @@ import ReactLoader from './components/ReactLoader';
 import getUser from './lib/getUserEntryById';
 import { getAuth } from 'firebase/auth';
 import IUser from './lib/IUser';
+import getUserEntryById from './lib/getUserEntryById';
+import Navbar from './components/Navbar';
 
-const app = initializeApp(config.firebaseConfig)
+const app = initializeApp(config.firebaseConfig);
+const auth = getAuth();
 export const db = getFirestore(app)
 
 const Login = lazy(() => import('./pages/Login'));
@@ -21,28 +25,42 @@ const Recipe = lazy(() => import('./pages/Recipe'))
 const CreateRecipe = lazy(() => import('./pages/CreateRecipe'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
-// const auth = getAuth();
-// let initialUser = null;
-// if(!!getAuth && !!getAuth().currentUser) {
-//   initialUser = getAuth().currentUser?.uid || null
-//   if(getAuth().currentUser?.uid != null) {
-//     await getUser(getAuth().currentUser.uid)
-//   }
-// }
+// type ContextType = { user: IUser | null };
 
-// const [user, setUser] = useState<IUser | null>()
+export const AuthProvider = (setUserEntry:React.Dispatch<React.SetStateAction<IUser | null>>) => {
+  useEffect(() => {
+    getAuth().onAuthStateChanged(async user => {
+      if (user) {
+        let res = await getUserEntryById(user.uid)
+          setUserEntry(res)
+          console.log("User info successfully fetched and set.")
+          console.log(res)
+      }
+      else {
+        setUserEntry(null)
+        console.log("User is not signed in. ")
+      }
+    })
+  }, [])
+}
 
 const App: React.FunctionComponent = () => {
+
+  const [userEntry, setUserEntry] = useState<IUser | null>(null)
+
+  AuthProvider(setUserEntry)
+
   return (
     <div>
-      <BrowserRouter>
-        <Suspense fallback={<ReactLoader />}>
-            <Routes>
+        <BrowserRouter>
+          <Navbar userEntry={userEntry} />
+          <Suspense fallback={<ReactLoader />}>
+            <Routes >
               <Route path={'/login'} element={<Login />} />
               <Route path={'/'} element={<Home />} />
               <Route path={'/profile/:username'} element={<Profile />} />
               <Route path={'/recipe/:recipeId'} element={<Recipe />} />
-              <Route path='/createrecipe' element={
+              <Route path={'/createrecipe'} element={
                 <AuthRoute>
                   <CreateRecipe />
                 </AuthRoute>
@@ -51,10 +69,11 @@ const App: React.FunctionComponent = () => {
               <Route path='*' element={<NotFound />} />
             </Routes>
           </Suspense>
-      </BrowserRouter>
+        </BrowserRouter>
     </div>
 
   );
 }
+
 
 export default App;
