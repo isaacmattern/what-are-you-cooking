@@ -21,17 +21,13 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     ingredients: [],
     directions: [],
   })
-  const [ingredientsList, setIngredientsLists] = useState<JSX.Element | false>(false)
-  const [directionsList, setDirectionsLists] = useState<JSX.Element | false>(false)
 
   useEffect(() => {
-
     const getRecipe = async () => {
       if(!!recipeId) {
         let res = await getRecipeById(recipeId)
         if(!!res) {
           setRecipe(res)
-          updateLists(res)
         } else {
           console.log("no response")
           navigate('/not-found');
@@ -40,33 +36,30 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
         console.log("no recipeId provided.") 
         navigate('/not-found');
       }
-
     }
     getRecipe()
       .catch(err => console.error(err))
   }, []);
 
-  const updateLists = (res:IRecipe) => {
 
-    setIngredientsLists(
-      <ul>
-        {res.ingredients && res.ingredients.map((ingredient, id) => {
-          return <li key={id}>{ingredient}</li>;
-        })}
-      </ul>
-    )
+  let ingredientsList = (
+    <ul>
+      {recipe.ingredients && recipe.ingredients.map((ingredient, id) => {
+        return <li key={id}>{ingredient}</li>;
+      })}
+    </ul>
+  )
 
-    console.log(res.directions)
+  console.log(recipe.directions)
 
-    setDirectionsLists(
-      <ol>          
-        {res.directions && res.directions.map((direction, id) => {
-          console.log(direction)
-          return <li key={id}>{direction}</li>;
-        })}
-      </ol>
-    )
-  }
+  let directionsList = (
+    <ol>          
+      {recipe.directions && recipe.directions.map((direction, id) => {
+        console.log(direction)
+        return <li key={id}>{direction}</li>;
+      })}
+    </ol>
+  )
   
   return (
 
