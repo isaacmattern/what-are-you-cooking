@@ -78,9 +78,12 @@ const Login: React.FunctionComponent<ILoginProps> = props => {
   }
 
   return (
-    <div>
-      <p>Login Page</p>
-      <button onClick={() => signInWithGoogle()} disabled={authing}>Sign In or Sign Up With Google</button>
+    <div className='my-4 xs:my-8'>
+      <p className='text-md xs:text-lg mb-4 max-w-sm m-auto'>Use an account on What Are You Cooking to post and share your recipes with your friends.</p>
+      <div className='flex justify-center'>
+        <button className='button' onClick={() => signInWithGoogle()} disabled={authing}>Sign In or Sign Up With Google</button>
+      </div>
+
     </div>
   );
 };

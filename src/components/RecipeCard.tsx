@@ -20,18 +20,18 @@ const RecipeCard: React.FunctionComponent<IRecipeCardPropTypes> = ({
 
   const navigate = useNavigate()
   return (
-    <div className="recipeCard">
-      <h3 className="recipeTitle">
-        <a onClick={() => {
+    <div className="recipeCard p-1 rounded-md text-slate-50 bg-slate-700 w-full">
+      <h3 className="recipeTitle text-lg xs:text-xl font-bold px-1">
+        <a className='link' onClick={() => {
           navigate(`/recipe/${recipeId}`)
         }}>
         {title}</a></h3>
-      <h4 className="author">By&nbsp;
-        <a onClick={() => {
+      <h4 className="author w-full bg-slate-50 text-slate-800 px-1">By&nbsp;
+        <a className='link' onClick={() => {
           navigate(`/profile/${authorUsername}`)
         }}>
         {authorName}</a></h4>
-      <p className="description">{description}</p>
+      <p className="description bg-slate-50 text-slate-800 rounded-b-sm px-1">{description}</p>
     </div>
   );
 };

@@ -15,16 +15,14 @@ export interface ICreateRecipeProps {
 
 const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
-  const user = getAuth().currentUser;
   const navigate = useNavigate();
 
-  const { userEntry } = props
+  const {userEntry} = props
+
   if(!userEntry) {
-    console.log("CreateRecipe rendered while user was not logged in")
     return <div></div>
   }
-
-
+  
   const [form, setForm] = useState<IRecipe>({
     title: "",
     description: "",
@@ -36,6 +34,8 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
     directions: [],
     recipeId: "",
   });
+  
+  
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

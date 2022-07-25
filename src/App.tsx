@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useEffect, useState} from 'react';
+import React, {lazy, Suspense, useEffect, useState, Component} from 'react';
 import { BrowserRouter, Outlet, Route, Router, Routes, useOutletContext } from 'react-router-dom';
 import './App.css';
 import UserContext from './context/user';
@@ -49,9 +49,10 @@ const App: React.FunctionComponent = () => {
   const [userEntry, setUserEntry] = useState<IUser | null>(null)
 
   AuthProvider(setUserEntry)
+  
 
   return (
-    <div>
+    <div className='text-sm xs:text-base text-slate-800 w-full max-w-screen-lg m-auto py-4 px-4'>
         <BrowserRouter>
           <Navbar userEntry={userEntry} />
           <Suspense fallback={<ReactLoader />}>
@@ -71,7 +72,6 @@ const App: React.FunctionComponent = () => {
           </Suspense>
         </BrowserRouter>
     </div>
-
   );
 }
 

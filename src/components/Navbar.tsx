@@ -28,7 +28,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
   let signInOutButton;
   if(auth.currentUser) {
     signInOutButton = 
-      <button onClick={() => {
+      <button className='button log-in-out' onClick={() => {
         signOut(auth).catch(err => {
           console.error(err)
         })
@@ -37,23 +37,23 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
       }}>Log Out</button>
   } else {
     signInOutButton = 
-      <button onClick={() => {
+      <button className='button log-in-out' onClick={() => {
         navigate('/login')
       }}>Log In</button>
   }
 
   return (
     <div className="navbar">
-      <h1 className="navlogo" onClick={() => {
+      <h1 className="navlogo text-slate-700 text-xl xs:text-2xl sm:text-3xl font-bold whitespace-nowrap cursor-pointer mb-1 sm:mb-2" onClick={() => {
         navigate('/')
       }}>What Are You Cooking?</h1>
 
-      <div>
-        <button onClick={() => {
+      <div className=''>
+        <button className='button' onClick={() => {
           navigate('/createrecipe')
         }}>Create Recipe</button>
 
-        <button onClick={() => {
+        <button className='button' onClick={() => {
           if(userEntry) {
             navigate(`/profile/${userEntry.username}`)
           } else {
