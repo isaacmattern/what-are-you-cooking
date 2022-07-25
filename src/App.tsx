@@ -17,6 +17,7 @@ export const db = getFirestore(app)
 const Login = lazy(() => import('./pages/Login'));
 const Home = lazy(() => import('./pages/Home'));
 const Profile = lazy(() => import('./pages/Profile'));
+const Recipe = lazy(() => import('./pages/Recipe'))
 const CreateRecipe = lazy(() => import('./pages/CreateRecipe'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -40,6 +41,7 @@ const App: React.FunctionComponent = () => {
               <Route path={'/login'} element={<Login />} />
               <Route path={'/'} element={<Home />} />
               <Route path={'/profile/:username'} element={<Profile />} />
+              <Route path={'/recipe/:recipeId'} element={<Recipe />} />
               <Route path='/createrecipe' element={
                 <AuthRoute>
                   <CreateRecipe />
