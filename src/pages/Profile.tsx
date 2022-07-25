@@ -5,7 +5,7 @@ import { db } from '../App';
 import Navbar from '../components/Navbar';
 import RecipeCardContainer from '../components/RecipeCardContainer';
 import getUserEntryByUsername from '../lib/getUserEntryByUsername';
-import { getUserRecipesByUserId } from '../lib/getUserRecipesByUserId';
+import getUserRecipesByUserId from '../lib/getUserRecipesByUserId';
 import IUser from '../lib/IUser';
 
 // export interface IProfileProps {
