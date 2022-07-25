@@ -13,7 +13,7 @@ const RecipeCardContainer: React.FunctionComponent<IRecipeCardContainerProps> = 
         <RecipeCard 
           title={recipe.title}
           recipeId={recipe.recipeId}
-          description={recipe.title}
+          description={recipe.description}
           authorName={recipe.authorName} 
           authorUsername={recipe.authorUsername}
           key={i}/>

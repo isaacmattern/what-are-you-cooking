@@ -9,55 +9,33 @@ import getUser from '../lib/getUserEntryById';
 import IRecipe from '../lib/IRecipe';
 import IUser from '../lib/IUser';
 
-export interface ICreateRecipeProps {};
+export interface ICreateRecipeProps {
+  userEntry: IUser | null;
+};
 
 const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
   const user = getAuth().currentUser;
   const navigate = useNavigate();
 
-  const [userEntry, setUserEntry] = useState<IUser>({
-    emailAddress: "???",
-    fullName: "???",
-    userId:"???",
-    username:"???",
-    posts: [""],
-  })
+  const { userEntry } = props
+  if(!userEntry) {
+    console.log("CreateRecipe rendered while user was not logged in")
+    return <div></div>
+  }
+
 
   const [form, setForm] = useState<IRecipe>({
     title: "",
     description: "",
-    authorID: "",
-    authorUsername: "",
-    authorName: "",
+    authorID: userEntry.userId,
+    authorUsername: userEntry.username,
+    authorName: userEntry.fullName,
     tags: [],
     ingredients: [],
     directions: [],
     recipeId: "",
   });
-
-  useEffect(() => {
-
-    const getUserEntry = async () => {
-      if(!!user) {
-        let res = await getUserEntryById(user.uid)
-        setUserEntry(res)
-        setForm({
-          ...form,
-          authorID: res.userId,
-          authorUsername: res.username,
-          authorName: res.fullName,
-        })
-        console.log("User info successfully fetched and set.")
-      } else {
-        console.error("User is not signed in. ")
-      }
-    }
-
-    getUserEntry()
-      .catch(err => console.error(err))
-
-  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
