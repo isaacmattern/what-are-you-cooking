@@ -12,8 +12,10 @@ const RecipeCardContainer: React.FunctionComponent<IRecipeCardContainerProps> = 
       {recipes.map((recipe:IRecipe, i:any) => (
         <RecipeCard 
           title={recipe.title}
+          recipeId={recipe.recipeId}
           description={recipe.title}
-          author={recipe.authorName} 
+          authorName={recipe.authorName} 
+          authorUsername={recipe.authorUsername}
           key={i}/>
       ))}
     </div>

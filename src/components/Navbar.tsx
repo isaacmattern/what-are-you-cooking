@@ -47,7 +47,9 @@ const Name: React.FunctionComponent<INameProps> = props => {
 
   return (
     <div className="navbar">
-      <h1 className="navlogo">What Are You Cooking?</h1>
+      <h1 className="navlogo" onClick={() => {
+        navigate('/')
+      }}>What Are You Cooking?</h1>
 
       <div>
         <button onClick={() => {

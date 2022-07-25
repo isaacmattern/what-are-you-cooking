@@ -9,4 +9,5 @@ export default interface IRecipe {
   tags: string[],
   ingredients: string[],
   directions: string[],
+  recipeId: string,
 };

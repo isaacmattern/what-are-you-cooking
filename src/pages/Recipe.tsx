@@ -20,6 +20,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     tags: [],
     ingredients: [],
     directions: [],
+    recipeId: "",
   })
 
   useEffect(() => {
@@ -67,7 +68,12 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
       <Navbar />
       <div className='recipe'>
         <h1>{recipe.title}</h1>
-        <h4>By {recipe.authorName}</h4>
+        {/* <h4>By {recipe.authorName}</h4> */}
+        <h4>By&nbsp;
+          <a onClick={() => {
+            navigate(`/profile/${recipe.authorUsername}`)
+          }}>{recipe.authorName}</a>
+        </h4>
         <p>{recipe.description}</p>
         <h3>Ingredients:</h3>
         {ingredientsList}

@@ -33,6 +33,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
     tags: [],
     ingredients: [],
     directions: [],
+    recipeId: "",
   });
 
   useEffect(() => {
@@ -79,7 +80,10 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
       let recipeId:string = "X";
       const recipesCollectionRef = collection(db, "recipes")
       await addDoc(recipesCollectionRef, form)
-        .then(docRef => recipeId = docRef.id)
+        .then(async docRef => {
+          recipeId = docRef.id
+          await updateDoc(docRef, {recipeId: recipeId})
+        })
         .catch(err => console.error(err))
 
       // Add ID of new recipe to user's posts array
