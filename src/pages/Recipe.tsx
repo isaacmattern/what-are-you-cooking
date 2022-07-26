@@ -1,3 +1,5 @@
+import { deleteDoc, getDoc, updateDoc, doc, collection } from 'firebase/firestore';
+import {db} from "../App"
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -5,11 +7,15 @@ import getRecipeById from '../lib/getRecipeById';
 import IRecipe from '../lib/IRecipe';
 import IUser from '../lib/IUser';
 
-export interface IRecipeProps {};
+export interface IRecipeProps {
+  userEntry: IUser | null;
+};
 
 const Recipe: React.FunctionComponent<IRecipeProps> = props => {
 
   let { recipeId } = useParams()
+  let { userEntry } = props
+
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<IRecipe>({
     title: "",
@@ -30,7 +36,6 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
         if(!!res) {
           setRecipe(res)
         } else {
-          console.log("no response")
           navigate('/not-found');
         }
       } else {
@@ -63,11 +68,45 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
   let directionsList = (
     <ol className='list-decimal ml-8'>          
       {recipe.directions && recipe.directions.map((direction, id) => {
-        console.log(direction)
         return <li key={id}>{direction}</li>;
       })}
     </ol>
   )
+
+  let deleteButton =
+    (recipe.authorUsername == userEntry?.username)
+    ? <button className='mt-4 button delete-button'
+        onClick={async () => {
+          if (window.confirm('Are you sure that you would like to delete your recipe? Deleting the recipe will remove it forever. To confirm your deletion, click OK.')) {
+            console.log('User decided to delete item');
+            // This is inefficient and can surely be improved.
+
+            // Remove recipe from recipes collection
+            const recipesCollectionRef = collection(db, "recipes")
+            await deleteDoc(doc(recipesCollectionRef, recipeId))
+            if(!!userEntry) {
+              // Remove recipe reference from users' posts array
+              const userDoc = await getDoc(doc(db, "users", userEntry.userId))
+              let data = userDoc.data()
+              let posts:string[] = []
+              // data is surely defined, appeasing typescript
+              if(data !== undefined) {
+                posts = data.posts
+              }
+              posts.push(recipe.recipeId)
+              // remove recipe from array
+              posts = posts.filter(function(e) { return e !== recipeId })
+              await updateDoc(doc(db, "users", userEntry.userId), {posts: posts}) 
+            }
+            console.log("Recipe successfully deleted")
+            navigate('/')
+          } else {
+            console.log('User decided not to delete item');
+          }
+        }}>
+        Delete Recipe
+      </button>
+    : <div></div>
   
   return (
 
@@ -89,6 +128,8 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
         {ingredientsList}
         <h3 className='font-bold mt-2'>Directions:</h3>
         {directionsList}
+
+        {deleteButton}
 
 
       </div>

@@ -30,7 +30,7 @@ const RecipeCard: React.FunctionComponent<IRecipeCardPropTypes> = ({
         <a className='link' onClick={() => {
           navigate(`/profile/${authorUsername}`)
         }}>
-        {authorName}</a></h4>
+        {authorUsername}</a></h4>
       <p className="description bg-slate-50 text-slate-800 rounded-b-sm px-1">{description}</p>
     </div>
   );

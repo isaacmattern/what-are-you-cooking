@@ -62,7 +62,7 @@ const App: React.FunctionComponent = () => {
                 <Route path={'/login'} element={<Login setUserEntry={setUserEntry}  />} />
                 <Route path={'/'} element={<Home />} />
                 <Route path={'/profile/:username'} element={<Profile />} />
-                <Route path={'/recipe/:recipeId'} element={<Recipe />} />
+                <Route path={'/recipe/:recipeId'} element={<Recipe userEntry={userEntry} />} />
                 <Route path={'/createrecipe'} element={
                   <AuthRoute>
                     <CreateRecipe userEntry={userEntry} />
