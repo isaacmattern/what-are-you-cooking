@@ -1,3 +1,4 @@
+
 import { getAuth } from 'firebase/auth';
 import { addDoc, collection, getDoc, doc, updateDoc } from 'firebase/firestore';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
@@ -15,27 +16,27 @@ export interface ICreateRecipeProps {
 
 const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
+  const user = getAuth().currentUser;
   const navigate = useNavigate();
 
-  const {userEntry} = props
+  const { userEntry } = props
 
-  if(!userEntry) {
-    return <div></div>
-  }
-  
   const [form, setForm] = useState<IRecipe>({
     title: "",
     description: "",
-    authorID: userEntry.userId,
-    authorUsername: userEntry.username,
-    authorName: userEntry.fullName,
+    authorID:"",
+    authorUsername: '',
+    authorName: '',
     tags: [],
     ingredients: [],
     directions: [],
     recipeId: "",
   });
-  
-  
+
+  if(!userEntry) {
+    console.log("CreateRecipe rendered while user was not logged in")
+    return <div></div>
+  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -215,3 +216,4 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 };
 
 export default CreateRecipe
+
