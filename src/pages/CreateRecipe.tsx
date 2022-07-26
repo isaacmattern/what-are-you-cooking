@@ -24,9 +24,9 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
   const [form, setForm] = useState<IRecipe>({
     title: "",
     description: "",
-    authorID:"",
-    authorUsername: '',
-    authorName: '',
+    authorID: userEntry ? userEntry.userId : "",
+    authorUsername: userEntry ? userEntry.username : "",
+    authorName: userEntry ? userEntry.fullName : "",
     tags: [],
     ingredients: [],
     directions: [],

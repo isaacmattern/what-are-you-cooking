@@ -44,7 +44,7 @@ const Profile: React.FunctionComponent = () => {
     <div>
       {/* <Navbar /> */}
       <div className='profile'>
-        <h1>Recipes from {username}</h1>
+        <h1 className='text-lg xs:text-xl mt-3'>Recipes from {username}</h1>
         <RecipeCardContainer recipes={recipes} />
       </div>
     </div>

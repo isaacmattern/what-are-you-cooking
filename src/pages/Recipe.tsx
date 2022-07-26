@@ -42,19 +42,26 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
       .catch(err => console.error(err))
   }, []);
 
+  let tags = (
+    recipe.tags && recipe.tags.map((tag, id) => {
+      return (
+      <div className='recipe-page-tag' key={id}>
+        {tag}
+      </div>
+      );
+    })
+  )
 
   let ingredientsList = (
-    <ul>
+    <ul className='list-disc ml-8'>
       {recipe.ingredients && recipe.ingredients.map((ingredient, id) => {
         return <li key={id}>{ingredient}</li>;
       })}
     </ul>
   )
 
-  console.log(recipe.directions)
-
   let directionsList = (
-    <ol>          
+    <ol className='list-decimal ml-8'>          
       {recipe.directions && recipe.directions.map((direction, id) => {
         console.log(direction)
         return <li key={id}>{direction}</li>;
@@ -66,18 +73,21 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
 
     <div>
       {/* <Navbar /> */}
-      <div className='recipe'>
-        <h1>{recipe.title}</h1>
+      <div className='recipe mt-4'>
+        <h1 className='font-bold text-lg xs:text-xl'>{recipe.title}</h1>
         {/* <h4>By {recipe.authorName}</h4> */}
-        <h4>By&nbsp;
-          <a onClick={() => {
+        <h4 className='text-xs xs:text-sm'>By&nbsp;
+          <a className='link text-slate-600' onClick={() => {
             navigate(`/profile/${recipe.authorUsername}`)
           }}>{recipe.authorName}</a>
         </h4>
-        <p>{recipe.description}</p>
-        <h3>Ingredients:</h3>
+        <p>"{recipe.description}"</p>
+        <div className='mt-2'>
+          {tags}
+        </div>
+        <h3 className='font-bold mt-2'>Ingredients:</h3>
         {ingredientsList}
-        <h3>Directions:</h3>
+        <h3 className='font-bold mt-2'>Directions:</h3>
         {directionsList}
 
 

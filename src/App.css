@@ -21,7 +21,7 @@
 
 .link:hover {
   cursor: pointer;
-  @apply text-slate-400
+  @apply opacity-60
 }
 
 .create-recipe-label {
@@ -40,4 +40,9 @@
 
 .create-recipe-form-group {
   @apply py-1
+}
+
+.recipe-page-tag {
+  padding: 2px 5px;
+  @apply text-xs xs:text-sm text-white bg-slate-600 w-fit rounded-md
 }
