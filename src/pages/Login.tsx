@@ -16,9 +16,13 @@ import {
 } from "firebase/firestore"
 import getUniqueUsername from '../lib/getUniqueUsername';
 
-export interface ILoginProps {};
+export interface ILoginProps {
+  setUserEntry: React.Dispatch<React.SetStateAction<IUser | null>>
+};
 
 const Login: React.FunctionComponent<ILoginProps> = props => {
+
+  const { setUserEntry } = props
 
   const auth = getAuth();
   const navigate = useNavigate();
@@ -42,6 +46,14 @@ const Login: React.FunctionComponent<ILoginProps> = props => {
           // Create New User and Username entry
           getUniqueUsername(response.user.displayName)
             .then(username => {
+
+              setUserEntry({
+                userId: response.user.uid,
+                username: username,
+                fullName: fullName,
+                emailAddress: emailAddress,
+                posts: []
+              })
 
               setDoc(doc(db, "users", response.user.uid), {
                 userId: response.user.uid,

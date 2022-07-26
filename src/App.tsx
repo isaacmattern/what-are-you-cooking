@@ -56,10 +56,10 @@ const App: React.FunctionComponent = () => {
     return (
       <div className='text-sm xs:text-base text-slate-800 w-full max-w-screen-lg m-auto py-4 px-4'>
           <BrowserRouter>
-            <Navbar userEntry={userEntry} />
+            <Navbar userEntry={userEntry} setUserEntry={setUserEntry} />
             <Suspense fallback={<ReactLoader />}>
               <Routes >
-                <Route path={'/login'} element={<Login />} />
+                <Route path={'/login'} element={<Login setUserEntry={setUserEntry}  />} />
                 <Route path={'/'} element={<Home />} />
                 <Route path={'/profile/:username'} element={<Profile />} />
                 <Route path={'/recipe/:recipeId'} element={<Recipe />} />

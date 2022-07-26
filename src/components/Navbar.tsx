@@ -6,6 +6,7 @@ import IUser from '../lib/IUser';
 
 export interface INavbarProps {
   userEntry: IUser | null,
+  setUserEntry: React.Dispatch<React.SetStateAction<IUser | null>>,
 };
 
 const Navbar: React.FunctionComponent<INavbarProps> = props => {
@@ -14,7 +15,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
   const navigate = useNavigate();
   const user = auth.currentUser;
 
-  const {userEntry} = props
+  const {userEntry, setUserEntry} = props
   
   // const userEntry  = useUserEntry();
 
@@ -32,6 +33,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
         signOut(auth).catch(err => {
           console.error(err)
         })
+        setUserEntry(null)
         console.log("Signed Out.")
         navigate('/login')
       }}>Log Out</button>
