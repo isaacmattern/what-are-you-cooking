@@ -8,8 +8,7 @@
 }
 
 .button {
-  padding: 2.5px 8px;
-  @apply mr-2 xs:mr-4 mb-2 bg-slate-200 text-slate-800 rounded-md hover:opacity-60
+  @apply text-base mr-2.5 xs:mr-4 px-2.5 py-0.5 mb-2 bg-slate-200 text-slate-800 rounded-md hover:opacity-60
 }
 
 .strong-button {

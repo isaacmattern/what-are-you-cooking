@@ -46,24 +46,32 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
 
   return (
     <div className="navbar">
-      <h1 className="navlogo text-slate-700 text-xl xs:text-2xl sm:text-3xl font-bold whitespace-nowrap cursor-pointer mb-1 sm:mb-2" onClick={() => {
+      <h1 className="navlogo text-slate-700 text-2xl xs:text-3xl font-bold whitespace-nowrap cursor-pointer mb-2 text-center" onClick={() => {
         navigate('/')
       }}>What Are You Cooking?</h1>
 
-      <div className=''>
-        <button className='button' onClick={() => {
-          navigate('/createrecipe')
-        }}>Create Recipe</button>
+      <div className='m-auto text-center flex flex-wrap justify-center xs:block'>
+        <div className='inline'>
+          <button className='button'>
+            Search
+          </button>
+          <button className='button' onClick={() => {
+            navigate('/createrecipe')
+          }}>Create Recipe</button>
+        </div>
 
-        <button className='button' onClick={() => {
-          if(userEntry) {
-            navigate(`/profile/${userEntry.username}`)
-          } else {
-            navigate('login')
-          }
-        }}>My Profile</button>
+        <div className='inline'>
+          <button className='button' onClick={() => {
+            if(userEntry) {
+              navigate(`/profile/${userEntry.username}`)
+            } else {
+              navigate('login')
+            }
+          }}>My Profile</button>
 
         {signInOutButton}
+        </div>
+
       </div>
     </div>
   )
