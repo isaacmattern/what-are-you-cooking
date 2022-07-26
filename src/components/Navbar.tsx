@@ -28,7 +28,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
   let signInOutButton;
   if(auth.currentUser) {
     signInOutButton = 
-      <button className='button log-in-out' onClick={() => {
+      <button className='button strong-button' onClick={() => {
         signOut(auth).catch(err => {
           console.error(err)
         })

@@ -11,6 +11,10 @@
   @apply mr-2 xs:mr-4 mb-2 bg-slate-200 text-slate-800 rounded-md py-1 px-2 hover:opacity-60
 }
 
+.strong-button {
+  @apply bg-slate-500 text-slate-50
+}
+
 .link {
   text-decoration: underline;
 }
@@ -20,6 +24,20 @@
   @apply text-slate-400
 }
 
-.log-in-out {
-  @apply bg-slate-500 text-slate-50
+.create-recipe-label {
+  @apply text-lg font-bold mr-2 block
+}
+
+.create-recipe-input, .create-recipe-textarea {
+  border: 1.5px solid;
+  padding: 2px 0;
+  @apply border-slate-800 rounded-md px-2
+}
+
+.create-recipe-input {
+  @apply mr-2 mb-2
+}
+
+.create-recipe-form-group {
+  @apply py-1
 }

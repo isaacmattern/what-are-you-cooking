@@ -8,7 +8,7 @@ export interface IRecipeCardContainerProps {
 
 const RecipeCardContainer: React.FunctionComponent<IRecipeCardContainerProps> = ({recipes}) => {
   return(
-    <div className='recipes flex flex-wrap justify-evenly items-center gap-4 mt-4'>
+    <div className='recipes flex flex-wrap justify-between items-center gap-4 mt-4'>
         {recipes.map((recipe:IRecipe, i:any) => (
           <div className='w-72'>
             <RecipeCard 

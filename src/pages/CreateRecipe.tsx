@@ -144,69 +144,78 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
     <div>
       {/* <Navbar /> */}
       
-      <div className="popup-inner">
-          <h2>Add a new recipe</h2>
+      <div className="create-recipe-form">
+          <h2 className='text-lg'>Add a new recipe using the form below</h2>
 
           <form onSubmit={(e) => handleSubmit(e)}>
 
-            <div className="form-group">
-              <label>Title</label>
+            <div className="create-recipe-form-group">
+              <label className='create-recipe-label'>Title</label>
               <input 
+                className='create-recipe-input'
                 type="text" 
                 value={form.title} 
                 onChange={e => setForm({...form, title: e.target.value})} />
             </div>
 
-            <div className="form-group">
-              <label>Description</label>
+            <div className="create-recipe-form-group">
+              <label className='create-recipe-label'>Description</label>
               <textarea 
+                className='create-recipe-textarea'
                 value={form.description} 
                 onChange={e => setForm({...form, description: e.target.value})} />
             </div>
 
-            <div className="form-group">
-              <label>Tags</label>
+            <div className="create-recipe-form-group">
+              <label className='create-recipe-label'>Tags</label>
               {
                 form.tags.map((tag, i) => (
                   <input 
+                    className='create-recipe-input'
                     type="text"
                     key={i}
                     value={tag} 
                     onChange={e => handleTag(e, i)} />
                 ))
               }
-              <button type="button" onClick={handleTagCount}>Add tag</button>
+              <button className='button' type="button" onClick={handleTagCount}>Add tag</button>
             </div>
 
-            <div className="form-group">
-              <label>Ingredients</label>
+            <div className="create-recipe-form-group">
+              <label className='create-recipe-label'>Ingredients</label>
               {
                 form.ingredients.map((ingredient, i) => (
-                  <input 
+                  <input
+                    className='create-recipe-input'
                     type="text"
                     key={i}
                     value={ingredient} 
                     onChange={e => handleIngredient(e, i)} />
                 ))
               }
-              <button type="button" onClick={handleIngredientCount}>Add ingredient</button>
+              <button className='button' type="button" onClick={handleIngredientCount}>Add ingredient</button>
             </div>
 
-            <div className="form-group">
-              <label>Directions</label>
-              {
+            <div className="create-recipe-form-group">
+              <label className='create-recipe-label'>Directions</label>
+              <div className='flex align-center'>
+                {
                 form.directions.map((direction, i) => (
-                  <textarea 
+                  <textarea
+                    
+                    className='create-recipe-input' 
                     key={i}
                     value={direction} 
                     onChange={e => handleDirection(e, i)} />
-                ))
-              }
-              <button type="button" onClick={handleDirectionCount}>Add direction</button>
+                  ))
+                }
+                <button className='button' type="button" onClick={handleDirectionCount}>Add direction</button>
+              </div>
+
             </div>
 
             <div className="buttons">
-              <button type="submit">Submit</button>
+              <button type="submit" className='button strong-button my-4'>Submit</button>
             </div>
 
           </form>
