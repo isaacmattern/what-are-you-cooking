@@ -7,6 +7,16 @@
   padding: 0;
 }
 
+.main-content {
+  min-height: calc(100vh - 40px);
+}
+
+.site-footer {
+  height: 40px;
+  border-top: 1px solid;
+  @apply border-slate-600
+}
+
 .button {
   @apply text-base mr-2.5 xs:mr-4 px-2.5 py-0.5 mb-2 bg-slate-200 text-slate-800 rounded-md hover:opacity-60
 }
@@ -49,5 +59,7 @@
 .recipe-page-tag {
   padding: 2px 5px;
   border: 1px solid;
-  @apply text-xs xs:text-sm text-slate-600 border-slate-600 w-fit rounded-md cursor-pointer hover:opacity-50
+  @apply inline mr-2 mb-2 text-xs xs:text-sm text-slate-600 border-slate-600 w-fit rounded-md cursor-pointer hover:opacity-50
 }
+
+

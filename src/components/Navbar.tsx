@@ -46,7 +46,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
 
   return (
     <div className="navbar">
-      <h1 className="navlogo text-slate-700 text-2xl xs:text-3xl font-bold whitespace-nowrap cursor-pointer mb-2 text-center" onClick={() => {
+      <h1 className="navlogo text-slate-700 text-2xl xs:text-3xl sm:text-4xl font-bold whitespace-nowrap cursor-pointer mb-1 sm:mb-2 text-center" onClick={() => {
         navigate('/')
       }}>What Are You Cooking?</h1>
 

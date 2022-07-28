@@ -11,6 +11,7 @@ import { getAuth } from 'firebase/auth';
 import IUser from './lib/IUser';
 import getUserEntryById from './lib/getUserEntryById';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 const app = initializeApp(config.firebaseConfig);
 export const db = getFirestore(app)
@@ -54,10 +55,11 @@ const App: React.FunctionComponent = () => {
     return <p>Loading...</p>
   } else {
     return (
-      <div className='text-sm xs:text-base text-slate-800 w-full max-w-screen-lg m-auto py-4 px-4'>
-          <BrowserRouter>
-            <Navbar userEntry={userEntry} setUserEntry={setUserEntry} />
+      <div>
+        <div className='main-content font-sans text-sm xs:text-base text-slate-800 w-full max-w-screen-lg m-auto py-4 px-4'>
+          <BrowserRouter>      
             <Suspense fallback={<ReactLoader />}>
+              <Navbar userEntry={userEntry} setUserEntry={setUserEntry} />
               <Routes >
                 <Route path={'/login'} element={<Login setUserEntry={setUserEntry}  />} />
                 <Route path={'/'} element={<Home />} />
@@ -73,7 +75,10 @@ const App: React.FunctionComponent = () => {
               </Routes>
             </Suspense>
           </BrowserRouter>
-      </div>
+         </div>
+         <Footer />
+      </div>           
+
     );
   }
 }
