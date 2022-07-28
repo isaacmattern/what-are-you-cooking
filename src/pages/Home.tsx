@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from "../App"
 import RecipeCardContainer from '../components/RecipeCardContainer';
-import Navbar from '../components/Navbar';
 
 export interface IHomeProps {};
 

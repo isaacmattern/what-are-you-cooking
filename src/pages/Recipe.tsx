@@ -2,7 +2,6 @@ import { deleteDoc, getDoc, updateDoc, doc, collection } from 'firebase/firestor
 import {db} from "../App"
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import getRecipeById from '../lib/getRecipeById';
 import IRecipe from '../lib/IRecipe';
 import IUser from '../lib/IUser';
@@ -58,7 +57,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
   )
 
   let ingredientsList = (
-    <ul className='list-disc ml-8'>
+    <ul className='list-disc ml-8 sm:text-lg'>
       {recipe.ingredients && recipe.ingredients.map((ingredient, id) => {
         return <li key={id}>{ingredient}</li>;
       })}
@@ -66,7 +65,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
   )
 
   let directionsList = (
-    <ol className='list-decimal ml-8'>          
+    <ol className='list-decimal ml-8 sm:text-lg'>          
       {recipe.directions && recipe.directions.map((direction, id) => {
         return <li key={id}>{direction}</li>;
       })}
@@ -74,7 +73,8 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
   )
 
   let deleteButton =
-    (recipe.authorUsername == userEntry?.username)
+    (recipe.authorUsername === userEntry?.username
+      || userEntry?.username === "isaacmattern")
     ? <button className='mt-4 button delete-button'
         onClick={async () => {
           if (window.confirm('Are you sure that you would like to delete your recipe? Deleting the recipe will remove it forever. To confirm your deletion, click OK.')) {
@@ -93,7 +93,6 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
               if(data !== undefined) {
                 posts = data.posts
               }
-              posts.push(recipe.recipeId)
               // remove recipe from array
               posts = posts.filter(function(e) { return e !== recipeId })
               await updateDoc(doc(db, "users", userEntry.userId), {posts: posts}) 
@@ -113,20 +112,20 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     <div>
       {/* <Navbar /> */}
       <div className='recipe mt-4'>
-        <h1 className='font-bold text-lg xs:text-xl'>{recipe.title}</h1>
+        <h1 className='font-bold text-lg xs:text-3xl'>{recipe.title}</h1>
         {/* <h4>By {recipe.authorName}</h4> */}
         <h4 className='text-xs xs:text-sm'>By&nbsp;
           <a className='link text-slate-600' onClick={() => {
             navigate(`/profile/${recipe.authorUsername}`)
           }}>{recipe.authorName}</a>
         </h4>
-        <p>"{recipe.description}"</p>
+        <p className='sm:text-lg'>"{recipe.description}"</p>
         <div className='mt-2'>
           {tags}
         </div>
-        <h3 className='font-bold mt-2'>Ingredients:</h3>
+        <h3 className='font-bold mt-2 sm:text-lg'>Ingredients:</h3>
         {ingredientsList}
-        <h3 className='font-bold mt-2'>Directions:</h3>
+        <h3 className='font-bold mt-2 sm:text-lg'>Directions:</h3>
         {directionsList}
 
         {deleteButton}

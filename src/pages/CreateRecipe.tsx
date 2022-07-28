@@ -4,15 +4,29 @@ import { addDoc, collection, getDoc, doc, updateDoc } from 'firebase/firestore';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../App';
-import Navbar from '../components/Navbar';
-import getUserEntryById from '../lib/getUserEntryById';
-import getUser from '../lib/getUserEntryById';
 import IRecipe from '../lib/IRecipe';
 import IUser from '../lib/IUser';
 
 export interface ICreateRecipeProps {
   userEntry: IUser | null;
 };
+
+const arrayContainsEmptyString = (array:string[]): boolean => {
+  let flag = false
+  array.forEach(item => {
+    if(!item || item.trim().length === 0) {
+      console.log("got here")
+      flag = true
+    }
+  })
+  return flag;
+}
+
+const formatTags = (tags:string[]): string[] => {
+  return tags.map(tag => {
+    return tag.toLowerCase().trim().replace(/[^a-z0-9 -]/gi, '');
+  })
+}
 
 const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
 
@@ -28,8 +42,8 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
     authorUsername: userEntry ? userEntry.username : "",
     authorName: userEntry ? userEntry.fullName : "",
     tags: [],
-    ingredients: [],
-    directions: [],
+    ingredients: [""],
+    directions: [""],
     recipeId: "",
   });
 
@@ -41,13 +55,19 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    setForm({
+      ...form,
+      tags: formatTags(form.tags)
+    })
+
     if (
-      !form.title ||
-      !form.description ||
-      !form.ingredients ||
-      !form.directions
+      form.title.trim().length === 0 ||
+      form.description.trim().length === 0 ||
+      arrayContainsEmptyString(form.ingredients) ||
+      arrayContainsEmptyString(form.directions) ||
+      arrayContainsEmptyString(form.tags)
     ) {
-      alert("Please fill out all fields")
+      alert("Please fill out all fields and make sure no field is left blank.")
       return
     }
 
@@ -58,7 +78,7 @@ const CreateRecipe: React.FunctionComponent<ICreateRecipeProps> = props => {
       // Add recipe to recipes collection
       let recipeId:string = "X";
       const recipesCollectionRef = collection(db, "recipes")
-      await addDoc(recipesCollectionRef, form)
+      await addDoc(recipesCollectionRef, {...form, tags: formatTags(form.tags)})
         .then(async docRef => {
           recipeId = docRef.id
           await updateDoc(docRef, {recipeId: recipeId})
