@@ -1,4 +1,4 @@
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../App';
@@ -6,10 +6,6 @@ import RecipeCardContainer from '../components/RecipeCardContainer';
 import getUserEntryByUsername from '../lib/getUserEntryByUsername';
 import getUserRecipesByUserId from '../lib/getUserRecipesByUserId';
 import IUser from '../lib/IUser';
-
-// export interface IProfileProps {
-//   user: IUser;
-// };
 
 const Profile: React.FunctionComponent = () => {
 

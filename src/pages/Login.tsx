@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { getAdditionalUserInfo, getAuth, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
 import { db } from '../App'
 import IUser from '../lib/IUser';
-import { getAnalytics, setUserProperties } from "firebase/analytics";
-
 import {
-  collection,
-  onSnapshot,
   doc,
-  addDoc,
-  deleteDoc,
   setDoc,
-  updateDoc
 } from "firebase/firestore"
 import getUniqueUsername from '../lib/getUniqueUsername';
 

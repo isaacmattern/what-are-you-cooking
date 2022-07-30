@@ -1,7 +1,6 @@
 import { getAuth, signOut } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import getUserEntryById from '../lib/getUserEntryById';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import IUser from '../lib/IUser';
 
 export interface INavbarProps {
@@ -13,18 +12,8 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
 
   const auth = getAuth();
   const navigate = useNavigate();
-  const user = auth.currentUser;
 
   const {userEntry, setUserEntry} = props
-  
-  // const userEntry  = useUserEntry();
-
-  // console.log("In Navbar")
-  // if(userEntry) {
-  //   console.log("username is " + userEntry.username)
-  // } else {
-  //   console.log("user is null")
-  // }
 
   let signInOutButton;
   if(auth.currentUser) {

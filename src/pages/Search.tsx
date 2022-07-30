@@ -1,9 +1,7 @@
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../App';
-import RecipeCardContainer from '../components/RecipeCardContainer';
-import getRecipesByTag from '../lib/getRecipesByTag';
 
 export interface ISearchProps {};
 

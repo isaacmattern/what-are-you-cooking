@@ -44,7 +44,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     }
     getRecipe()
       .catch(err => console.error(err))
-  }, []);
+  });
 
   let tags = (
     recipe.tags && recipe.tags.map((tag, id) => {
@@ -134,9 +134,9 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
         <h1 className='font-bold text-lg xs:text-3xl text-slate-700'>{recipe.title}</h1>
         {/* <h4>By {recipe.authorName}</h4> */}
         <h4 className='text-xs xs:text-sm'>By&nbsp;
-          <a className='link text-slate-600' onClick={() => {
+          <button className='link text-slate-600' onClick={() => {
             navigate(`/profile/${recipe.authorUsername}`)
-          }}>{recipe.authorName}</a>
+          }}>{recipe.authorName}</button>
         </h4>
         <p className='sm:text-lg'>"{recipe.description}"</p>
         <div className='mt-2'>
