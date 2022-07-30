@@ -72,41 +72,59 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     </ol>
   )
 
+  let confirmDeleteDiv = (
+    <div className='hidden' id='confirmDeleteDiv'>
+      <p className='sm:text-lg mb-2'>Are you sure you want to want to delete this recipe?</p>
+
+      <button className='button delete-button' onClick={async () => {
+        const recipesCollectionRef = collection(db, "recipes")
+        await deleteDoc(doc(recipesCollectionRef, recipeId))
+        if(!!userEntry) {
+          // Remove recipe reference from users' posts array
+          const userDoc = await getDoc(doc(db, "users", userEntry.userId))
+          let data = userDoc.data()
+          let posts:string[] = []
+          // data is surely defined, appeasing typescript
+          if(data !== undefined) {
+            posts = data.posts
+          }
+          // remove recipe from array
+          posts = posts.filter(function(e) { return e !== recipeId })
+          await updateDoc(doc(db, "users", userEntry.userId), {posts: posts}) 
+        }
+        console.log("Recipe successfully deleted")
+        navigate('/')
+      }}>
+        Yes, delete it
+      </button>
+
+      <button className='button' onClick={() => {
+        let el = document.getElementById('confirmDeleteDiv')
+        if(el !== null) {
+          el.style.display = "none";
+        }
+      }}>
+        No
+      </button>
+    </div>
+  )
+
   let deleteButton =
     (recipe.authorUsername === userEntry?.username
       || userEntry?.username === "isaacmattern")
     ? <button className='mt-4 button delete-button'
-        onClick={async () => {
-          if (window.confirm('Are you sure that you would like to delete your recipe? Deleting the recipe will remove it forever. To confirm your deletion, click OK.')) {
-            console.log('User decided to delete item');
-            // This is inefficient and can surely be improved.
-
-            // Remove recipe from recipes collection
-            const recipesCollectionRef = collection(db, "recipes")
-            await deleteDoc(doc(recipesCollectionRef, recipeId))
-            if(!!userEntry) {
-              // Remove recipe reference from users' posts array
-              const userDoc = await getDoc(doc(db, "users", userEntry.userId))
-              let data = userDoc.data()
-              let posts:string[] = []
-              // data is surely defined, appeasing typescript
-              if(data !== undefined) {
-                posts = data.posts
-              }
-              // remove recipe from array
-              posts = posts.filter(function(e) { return e !== recipeId })
-              await updateDoc(doc(db, "users", userEntry.userId), {posts: posts}) 
-            }
-            console.log("Recipe successfully deleted")
-            navigate('/')
-          } else {
-            console.log('User decided not to delete item');
+        onClick={() => {
+          let el = document.getElementById('confirmDeleteDiv')
+          if(el !== null) {
+            el.style.display = "block";
           }
         }}>
         Delete Recipe
       </button>
     : <div></div>
   
+
+
   return (
 
     <div>
@@ -130,6 +148,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
 
         {deleteButton}
 
+        {confirmDeleteDiv}
 
       </div>
       

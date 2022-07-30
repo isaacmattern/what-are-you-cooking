@@ -7,7 +7,7 @@ const Footer: React.FunctionComponent<IFooterProps> = props => {
     <div className='site-footer mt-auto flex justify-center items-center w-full'>
       <div>
         <p className='text-center'>
-        Site designed and built by <span className='link'>Isaac Mattern</span>
+        Site designed and built by <a href="https://isaacmattern.com" className='link'>Isaac Mattern</a>
         </p>
       </div>
 
