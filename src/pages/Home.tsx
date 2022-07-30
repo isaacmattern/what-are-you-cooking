@@ -31,7 +31,7 @@ const Home: React.FunctionComponent<IHomeProps> = props => {
     <div>
       {/* <Navbar /> */}
 
-      <p className='text-lg xs:text-xl mt-1.5 xs:mt-3'>Welcome to <span className='font-bold'>What Are You Cooking</span>!</p>
+      <p className='text-lg xs:text-xl mt-1.5 xs:mt-3'>Welcome to <span className='font-bold text-slate-700'>What Are You Cooking</span>!</p>
       <p className='text-lg xs:text-xl mt-1'>Check out some recently posted recipes</p>
       <RecipeCardContainer recipes={recipes} />
     </div>

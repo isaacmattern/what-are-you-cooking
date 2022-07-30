@@ -37,13 +37,11 @@ const Tag: React.FunctionComponent<ITagProps> = props => {
 
   return (
     <div>
-      {/* <Navbar /> */}
       <div className='tag-page'>
         <h1 className='text-lg xs:text-xl mt-3'>Recipes with the tag<span className='recipe-page-tag sm:text-base ml-2'>{tag}</span></h1>
         <RecipeCardContainer recipes={recipes} />
       </div>
     </div>
-
   )
 };
 

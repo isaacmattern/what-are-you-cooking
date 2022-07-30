@@ -22,7 +22,7 @@ const Profile: React.FunctionComponent = () => {
   const recipesCollectionRef = collection(db, "recipes")
 
   useEffect(() => {
-    const checkUserExistsAndSetReciptes = async () => {
+    const checkUserExistsAndSetRecipes = async () => {
       console.log(username)
       const userEntryRes = await getUserEntryByUsername(username || "");
       console.log(userEntryRes)
@@ -36,7 +36,7 @@ const Profile: React.FunctionComponent = () => {
         navigate('/not-found');
       }
     }
-    checkUserExistsAndSetReciptes();
+    checkUserExistsAndSetRecipes();
   }, [username]);
 
   return (

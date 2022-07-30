@@ -46,13 +46,15 @@ const Navbar: React.FunctionComponent<INavbarProps> = props => {
 
   return (
     <div className="navbar">
-      <h1 className="navlogo text-slate-700 text-2xl xs:text-3xl sm:text-4xl font-bold whitespace-nowrap cursor-pointer mb-1 sm:mb-2 text-center" onClick={() => {
+      <h1 className="navlogo text-slate-700 text-2xl xs:text-3xl sm:text-4xl font-bold whitespace-nowrap cursor-pointer mb-1 sm:mb-2 text-center hover:opacity-60" onClick={() => {
         navigate('/')
       }}>What Are You Cooking?</h1>
 
       <div className='m-auto text-center flex flex-wrap justify-center xs:block'>
         <div className='inline'>
-          <button className='button'>
+          <button className='button' onClick={() => {
+            navigate('/search')
+          }}>
             Search
           </button>
           <button className='button' onClick={() => {

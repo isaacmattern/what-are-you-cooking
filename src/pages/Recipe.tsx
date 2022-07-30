@@ -131,7 +131,7 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     <div>
       {/* <Navbar /> */}
       <div className='recipe mt-4'>
-        <h1 className='font-bold text-lg xs:text-3xl'>{recipe.title}</h1>
+        <h1 className='font-bold text-lg xs:text-3xl text-slate-700'>{recipe.title}</h1>
         {/* <h4>By {recipe.authorName}</h4> */}
         <h4 className='text-xs xs:text-sm'>By&nbsp;
           <a className='link text-slate-600' onClick={() => {
