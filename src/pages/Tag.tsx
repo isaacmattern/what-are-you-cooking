@@ -3,18 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../App';
 import RecipeCardContainer from '../components/RecipeCardContainer';
+import getRecipesByTag from '../lib/getRecipesByTag';
 import getUserEntryByUsername from '../lib/getUserEntryByUsername';
 import getUserRecipesByUserId from '../lib/getUserRecipesByUserId';
 import IUser from '../lib/IUser';
 
-// export interface IProfileProps {
-//   user: IUser;
-// };
+export interface ITagProps {};
 
-const Profile: React.FunctionComponent = () => {
-
-  let { username } = useParams()
-  const [userEntry, setUserEntry] = useState<IUser | undefined>(undefined);
+const Tag: React.FunctionComponent<ITagProps> = props => {
+  let { tag } = useParams()
   const navigate = useNavigate();
 
   const [recipes, setRecipes]:any[] = useState([])
@@ -23,27 +20,26 @@ const Profile: React.FunctionComponent = () => {
 
   useEffect(() => {
     const checkUserExistsAndSetReciptes = async () => {
-      console.log(username)
-      const userEntryRes = await getUserEntryByUsername(username || "");
-      console.log(userEntryRes)
-      
-      if(!!userEntryRes && userEntryRes.userId) {
-        setUserEntry(userEntryRes);
-
-        const recipesRes = await getUserRecipesByUserId(userEntryRes.userId)
-        setRecipes(recipesRes)
+      console.log(tag)
+      if(tag !== undefined) {
+        const recipesRes = await getRecipesByTag(tag)
+        if(recipesRes.length === 0 || !!recipesRes) {
+          setRecipes(recipesRes)
+        } else {
+          navigate('/not-found');
+        }
       } else {
-        navigate('/not-found');
+        navigate('/not-found')
       }
     }
     checkUserExistsAndSetReciptes();
-  }, [username]);
+  }, [tag]);
 
   return (
     <div>
       {/* <Navbar /> */}
-      <div className='profile'>
-        <h1 className='text-lg xs:text-xl mt-3'>Recipes from {userEntry?.fullName} (@{username})</h1>
+      <div className='tag-page'>
+        <h1 className='text-lg xs:text-xl mt-3'>Recipes with the tag<span className='recipe-page-tag sm:text-base ml-2'>{tag}</span></h1>
         <RecipeCardContainer recipes={recipes} />
       </div>
     </div>
@@ -51,4 +47,4 @@ const Profile: React.FunctionComponent = () => {
   )
 };
 
-export default Profile
+export default Tag

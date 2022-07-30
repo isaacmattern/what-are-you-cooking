@@ -17,14 +17,14 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
 
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState<IRecipe>({
-    title: "",
-    description: "",
+    title: "Loading...",
+    description: "Loading...",
     authorID: "",
-    authorUsername: "",
+    authorUsername: "Loading...",
     authorName: "",
     tags: [],
-    ingredients: [],
-    directions: [],
+    ingredients: ["Loading..."],
+    directions: ["Loading..."],
     recipeId: "",
   })
 
@@ -49,7 +49,9 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
   let tags = (
     recipe.tags && recipe.tags.map((tag, id) => {
       return (
-      <div className='recipe-page-tag' key={id}>
+      <div className='recipe-page-tag' key={id} onClick={() => {
+        navigate(`/tags/${tag}`)
+      }}>
         {tag}
       </div>
       );
@@ -124,7 +126,6 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
     : <div></div>
   
 
-
   return (
 
     <div>
@@ -151,11 +152,10 @@ const Recipe: React.FunctionComponent<IRecipeProps> = props => {
         {confirmDeleteDiv}
 
       </div>
-      
     </div>
 
-
   );
+
 };
 
 export default Recipe

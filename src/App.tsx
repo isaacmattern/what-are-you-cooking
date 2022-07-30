@@ -12,6 +12,7 @@ import IUser from './lib/IUser';
 import getUserEntryById from './lib/getUserEntryById';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Tag from './pages/Tag';
 
 const app = initializeApp(config.firebaseConfig);
 export const db = getFirestore(app)
@@ -65,6 +66,7 @@ const App: React.FunctionComponent = () => {
                 <Route path={'/'} element={<Home />} />
                 <Route path={'/profile/:username'} element={<Profile />} />
                 <Route path={'/recipe/:recipeId'} element={<Recipe userEntry={userEntry} />} />
+                <Route path={'/tags/:tag'} element={<Tag />} />
                 <Route path={'/createrecipe'} element={
                   <AuthRoute>
                     <CreateRecipe userEntry={userEntry} />
