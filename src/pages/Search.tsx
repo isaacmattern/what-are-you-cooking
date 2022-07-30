@@ -55,10 +55,10 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
           : <div><p className='sm:text-lg'></p></div>
         }
       </div>
-      <div className='mt-2'>
+      <div className='mt-3'>
         {tags.length !== 0
           ? (
-            <div>
+            <div className='mb-4'>
               <p className='sm:text-lg'>Recipe Results:</p>
               <RecipeCardContainer recipes={recipes} />
             </div>
@@ -112,7 +112,7 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
       </div>
       <div className='search-results'>
         {searchResults}
-        <p id='no-results' className='hidden sm:text-lg'>If no results appear, there were no recipes with those tags.</p>
+        <p id='no-results' className='hidden sm:text-lg text-slate-500'>If no results appear, there were no recipes with those tags.</p>
       </div>
     </div>
   );
