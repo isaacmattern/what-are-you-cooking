@@ -19,10 +19,11 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
       let tagResults: string[] = []
       let recipeResults: IRecipe[] = []
       if(input !== undefined) {
-        const words = input?.split(" ")
+        let words = input?.split(",")
+        words = words.map(word => {return word.trim()})
 
         for(const word of words) {
-          const recipesRes = await getRecipesByTag(word)
+          const recipesRes = await getRecipesByTag(word.trim())
           if(recipesRes.length !== 0) {
             tagResults.push(word)
           }
@@ -97,7 +98,7 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
   return (
     <div>
       <div className='search-form-wrapper mt-4 mb-4'>
-        <p className='sm:text-lg w-full max-w-lg m-auto'>Use the search bar to search for a recipe. At the moment, only recipes with tags can be searched, and recipes without a tag will not be found.</p>
+        <p className='sm:text-lg w-full max-w-lg m-auto'>Use the search bar to search for a recipe. At the moment, only recipes with tags can be searched, and recipes without a tag will not be found. Separate your search terms with a comma. Ex: "peanut butter, smoothie"</p>
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="search-bar-wrapper m-auto">
             <input
