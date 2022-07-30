@@ -1,7 +1,5 @@
-import { collection } from 'firebase/firestore';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { db } from '../App';
 import RecipeCardContainer from '../components/RecipeCardContainer';
 import getRecipesByTag from '../lib/getRecipesByTag';
 import IRecipe from '../lib/IRecipe';
@@ -13,57 +11,83 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
   const navigate = useNavigate();
   const [tags, setTags]:any[] = useState([])
   const [recipes, setRecipes]:any[] = useState([])
-  const recipesCollectionRef = collection(db, "recipes")
   const [form, setForm] = useState<String>("");
-
-  let searchResults = <div></div>
+  const [changeState, setChangeState] = useState(0)
 
   useEffect(() => {
     const getSearchResults = async () => {
+      let tagResults: string[] = []
+      let recipeResults: IRecipe[] = []
       if(input !== undefined) {
         const words = input?.split(" ")
-        console.log(words)
-        let tagResults: string[] = []
-        let recipeResults: IRecipe[] = []
 
-        await words.forEach(async word => {
+        for(const word of words) {
           const recipesRes = await getRecipesByTag(word)
           if(recipesRes.length !== 0) {
             tagResults.push(word)
           }
-          recipeResults.concat(recipesRes)
-          console.log(recipesRes)
-        })
+          recipeResults = recipeResults.concat(recipesRes)
+        }
 
         setTags(tagResults)
         setRecipes(recipeResults)
-
-        searchResults = (
-          <div>
-            <div>
-              {/* <p>Tag Results:</p>
-              {tagResults.map((tag:string, i:any) => {
-                <p key={i}>{tag}</p>
-              })} */}
-            </div>
-            <div>
-              <p>Recipe Results:</p>
-              <RecipeCardContainer recipes={recipeResults} />
-            </div>
-          </div>
-        )
-
-        console.log("here")
-
       }
     }
     getSearchResults();
-  }, []);
+  }, [form, changeState, input]);
+
+  let searchResults = (
+    <div>
+      <div>
+        {tags.length !== 0
+          ? (
+            <div>
+              <p className='sm:text-lg mb-1'>Tag Results:</p>
+              {tags.map((tag:string, i:any) => {
+                return <p className='recipe-page-tag' key={i} onClick={() => {
+                  navigate(`/tags/${tag}`)
+                }}
+                  >{tag}
+                </p>
+              })}
+            </div>
+          )
+          : <div><p className='sm:text-lg'></p></div>
+        }
+      </div>
+      <div className='mt-2'>
+        {tags.length !== 0
+          ? (
+            <div>
+              <p className='sm:text-lg'>Recipe Results:</p>
+              <RecipeCardContainer recipes={recipes} />
+            </div>
+          )
+          : <div></div>
+        }
+      </div>
+    </div>
+  );
+
+  if(tags.length !== 0) {
+    let el = document.getElementById('no-results')
+
+    if(el !== null) {
+      el.style.display = 'hidden'
+    }
+  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     navigate(`/search/${form.trim()}`)
+    setChangeState(changeState + 1)
+
+    let el = document.getElementById('no-results')
+
+    if(el !== null) {
+      el.style.display = 'block'
+    }
+
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +97,7 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
   return (
     <div>
       <div className='search-form-wrapper mt-4 mb-4'>
-        <p className='sm:text-lg w-full max-w-lg m-auto'>Use the search bar to search for a recipe. At the moment, recipes with tags can be searched.</p>
+        <p className='sm:text-lg w-full max-w-lg m-auto'>Use the search bar to search for a recipe. At the moment, only recipes with tags can be searched, and recipes without a tag will not be found.</p>
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="search-bar-wrapper m-auto">
             <input
@@ -87,10 +111,8 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
         </form>
       </div>
       <div className='search-results'>
-        {input}
         {searchResults}
-        {/* <h1>Results for {input}</h1>
-        <RecipeCardContainer recipes={recipes} /> */}
+        <p id='no-results' className='hidden sm:text-lg'>If no results appear, there were no recipes with those tags.</p>
       </div>
     </div>
   );

@@ -34,7 +34,6 @@ export const AuthProvider = (setUserEntry:React.Dispatch<React.SetStateAction<IU
         let res = await getUserEntryById(user.uid)
           setUserEntry(res)
           console.log("User info successfully fetched and set.")
-          console.log(res)
           setIsLoading(false)
       }
       else {

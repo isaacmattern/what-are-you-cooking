@@ -1,7 +1,5 @@
-import { collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { db } from '../App';
 import RecipeCardContainer from '../components/RecipeCardContainer';
 import getUserEntryByUsername from '../lib/getUserEntryByUsername';
 import getUserRecipesByUserId from '../lib/getUserRecipesByUserId';
@@ -15,8 +13,6 @@ const Profile: React.FunctionComponent = () => {
 
   const [recipes, setRecipes]:any[] = useState([])
 
-  const recipesCollectionRef = collection(db, "recipes")
-
   useEffect(() => {
     const checkUserExistsAndSetRecipes = async () => {
       const userEntryRes = await getUserEntryByUsername(username || "");
@@ -29,7 +25,7 @@ const Profile: React.FunctionComponent = () => {
       }
     }
     checkUserExistsAndSetRecipes();
-  }, [username]);
+  }, [username, navigate]);
 
   return (
     <div>

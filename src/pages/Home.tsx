@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from "../App"
 import RecipeCardContainer from '../components/RecipeCardContainer';
@@ -8,8 +7,6 @@ export interface IHomeProps {};
 
 const Home: React.FunctionComponent<IHomeProps> = props => {
   
-  const navigate = useNavigate();
-
   const [recipes, setRecipes]:any[] = useState([])
 
   const recipesCollectionRef = collection(db, "recipes")
@@ -24,7 +21,7 @@ const Home: React.FunctionComponent<IHomeProps> = props => {
         }
       }))
     })
-  }, [])
+  }, [recipesCollectionRef])
 
   return (
     <div>

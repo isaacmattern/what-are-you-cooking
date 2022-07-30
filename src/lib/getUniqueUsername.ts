@@ -1,11 +1,6 @@
-import { getAuth } from "firebase/auth";
 import {
-  collection,
-  onSnapshot,
-  doc,
   getDoc,
-  addDoc,
-  deleteDoc,
+  doc,
   setDoc
 } from "firebase/firestore"
 
@@ -22,7 +17,7 @@ export default async function getUniqueUsername(name:string):Promise<string> {
   const docSnap = await getDoc(docRef);
   
   if (docSnap.exists()) {
-    console.log("Username already taken!!");
+    console.log(`Username ${username} already taken!!`);
 
     const originalUsername = username
     let unique = false

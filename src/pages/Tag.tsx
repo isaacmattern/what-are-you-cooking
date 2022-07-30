@@ -1,12 +1,7 @@
-import { collection, doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { db } from '../App';
 import RecipeCardContainer from '../components/RecipeCardContainer';
 import getRecipesByTag from '../lib/getRecipesByTag';
-import getUserEntryByUsername from '../lib/getUserEntryByUsername';
-import getUserRecipesByUserId from '../lib/getUserRecipesByUserId';
-import IUser from '../lib/IUser';
 
 export interface ITagProps {};
 
@@ -14,7 +9,6 @@ const Tag: React.FunctionComponent<ITagProps> = props => {
   let { tag } = useParams()
   const navigate = useNavigate();
   const [recipes, setRecipes]:any[] = useState([])
-  const recipesCollectionRef = collection(db, "recipes")
 
   useEffect(() => {
     const checkUserExistsAndSetReciptes = async () => {
@@ -30,7 +24,7 @@ const Tag: React.FunctionComponent<ITagProps> = props => {
       }
     }
     checkUserExistsAndSetReciptes();
-  }, [tag]);
+  }, [tag, navigate]);
 
   return (
     <div>
