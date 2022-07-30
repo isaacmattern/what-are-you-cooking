@@ -19,13 +19,9 @@ const Profile: React.FunctionComponent = () => {
 
   useEffect(() => {
     const checkUserExistsAndSetRecipes = async () => {
-      console.log(username)
       const userEntryRes = await getUserEntryByUsername(username || "");
-      console.log(userEntryRes)
-      
       if(!!userEntryRes && userEntryRes.userId) {
         setUserEntry(userEntryRes);
-
         const recipesRes = await getUserRecipesByUserId(userEntryRes.userId)
         setRecipes(recipesRes)
       } else {

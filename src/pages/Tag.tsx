@@ -13,14 +13,11 @@ export interface ITagProps {};
 const Tag: React.FunctionComponent<ITagProps> = props => {
   let { tag } = useParams()
   const navigate = useNavigate();
-
   const [recipes, setRecipes]:any[] = useState([])
-
   const recipesCollectionRef = collection(db, "recipes")
 
   useEffect(() => {
     const checkUserExistsAndSetReciptes = async () => {
-      console.log(tag)
       if(tag !== undefined) {
         const recipesRes = await getRecipesByTag(tag)
         if(recipesRes.length === 0 || !!recipesRes) {

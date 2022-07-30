@@ -16,7 +16,6 @@ const Home: React.FunctionComponent<IHomeProps> = props => {
 
   useEffect(() => {
     onSnapshot(recipesCollectionRef, snapshot => {
-      console.log(snapshot)
       setRecipes(snapshot.docs.map(doc => {
         return {
           id: doc.id,
