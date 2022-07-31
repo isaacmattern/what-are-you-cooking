@@ -20,7 +20,7 @@ const Search: React.FunctionComponent<ISearchProps> = props => {
       let recipeResults: IRecipe[] = []
       if(input !== undefined) {
         let words = input?.split(",")
-        words = words.map(word => {return word.trim()})
+        words = words.map(word => {return word.trim().toLowerCase()})
 
         for(const word of words) {
           const recipesRes = await getRecipesByTag(word.trim())
